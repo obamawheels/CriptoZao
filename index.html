@@ -4,15 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CriptoZao</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <h1>ZaoCO sitio</h1>
-
-  <button id="connectWallet">Connect Phantom Wallet</button>
-  <button id="disconnectWallet" disabled>Disconnect</button>
-  <p id="walletStatus">Not connected</p>
-
-  <!-- Solana web3.js MUST be loaded first -->
+<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen">
+  <div class="bg-gray-800 p-6 rounded-lg shadow-lg w-96 text-center">
+    <h1 class="text-2xl font-bold mb-4">ZaoCO Sitio</h1>
+    
+    <button id="connectWallet" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mb-2">Connect Phantom Wallet</button>
+    <button id="disconnectWallet" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mb-2" disabled>Disconnect</button>
+    
+    <p id="walletStatus" class="mt-2">Not connected</p>
+    <p id="SOLbal" class="mt-1">SOL Balance: N/A</p>
+    <p id="ZaoCObal" class="mt-1">ZAOCO Balance: N/A</p>
+  </div>
+  
+  <div id="graph" class="w-full max-w-4xl mt-6 hidden">
+    <iframe id="geckoterminal-embed" title="GeckoTerminal Embed" src="https://www.geckoterminal.com/solana/pools/6hn884qHuBPTQE1xYY85mPPDM7fs6MPaHpMDRSxSfwNo?embed=1&info=0&swaps=0&grayscale=0&light_chart=0&chart_type=price&resolution=15m" frameborder="0" allow="clipboard-write" allowfullscreen class="w-full h-96"></iframe>
+  </div>
+  
   <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.76.0/lib/index.iife.min.js"></script>
   <script src="./main.js"></script>
 </body>
