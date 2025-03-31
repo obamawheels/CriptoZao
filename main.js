@@ -14,10 +14,12 @@ async function connectWallet() {
     const connectButton = document.getElementById("connectWallet");
     const disconnectButton = document.getElementById("disconnectWallet");
     const graph = document.getElementById("graph");
+    const terminal = document.getElementById("integrated-terminal");
 
     connectButton.disabled = true; // Disable button during connection attempt
     walletStatus.textContent = "Connecting...";
     graph.style.display = "block";
+    terminal.style.display = "block";
 
 
     try {
@@ -68,10 +70,12 @@ async function disconnectWallet() {
     const SOLbal = document.getElementById("SOLbal");
     const ZaoCObal = document.getElementById("ZaoCObal");
     const graph = document.getElementById("graph");
+    const terminal = document.getElementById("integrated-terminal");
 
     disconnectButton.disabled = true; // Disable button during disconnection attempt
     walletStatus.textContent = "Disconnecting...";
     graph.style.display = "none";
+    terminal.style.display = "none";
 
     try {
         if (!window.solana) {

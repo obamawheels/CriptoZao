@@ -19,9 +19,31 @@
   </div>
   
   <div id="graph" class="w-full max-w-4xl mt-6 hidden">
-    <iframe id="geckoterminal-embed" title="GeckoTerminal Embed" src="https://www.geckoterminal.com/solana/pools/6hn884qHuBPTQE1xYY85mPPDM7fs6MPaHpMDRSxSfwNo?embed=1&info=0&swaps=0&grayscale=0&light_chart=0&chart_type=price&resolution=15m" frameborder="0" allow="clipboard-write" allowfullscreen class="w-full h-96"></iframe>
+    <iframe id="geckoterminal-embed" title="GeckoTerminal Embed" src="https://www.geckoterminal.com/solana/pools/6hn884qHuBPTQE1xYY85mPPDM7fs6MPaHpMDRSxSfwNo?embed=1&info=1&swaps=0&grayscale=0&light_chart=0&chart_type=price&resolution=15m" frameborder="0" allow="clipboard-write" allowfullscreen class="w-full h-96"></iframe>
+  </div>
+
+  <script src="https://terminal.jup.ag/main-v4.js" data-preload></script>
+
+  <div id="integrated-terminal" class="w-full max-w-4xl mt-6 hidden">
+    <script>
+        window.Jupiter.init({
+            displayMode: "integrated",
+            integratedTargetId: "integrated-terminal",
+            endpoint: "https://misty-radial-telescope.solana-mainnet.quiknode.pro/a003338ae943cccba5b8f9e7231c3dbda61eace0/",
+            formProps: {
+                fixedInputMint: false,
+                fixedOutputMint: true,
+                swapMode: "ExactIn",
+                initialInputMint: "So11111111111111111111111111111111111111112",
+                initialOutputMint: "2TcMhXggLDRKNUpkHZU7oPGhMBgFPhVRErpTvA9AdTLm",
+                strictTokenList: false
+            }
+        });
+    </script>
   </div>
   
+
+
   <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.76.0/lib/index.iife.min.js"></script>
   <script src="./main.js"></script>
 </body>
