@@ -1,7 +1,7 @@
 // ----- Token and Network Configuration -----
 const SOL_MINT = "So11111111111111111111111111111111111111112"; // SOL Mint Address
 const CRL_MINT = "9AtC4cXKs7XUGCsoxPcEuMeig68MJwHpn6LXQCgF19DY"; // CRL Mint Address
-const BACKEND_URL = "http://localhost:3000"; // Change to your deployed backend URL when live
+const BACKEND_URL = "https://criptolag.onrender.com"; // Change to your deployed backend URL when live
 
 let publicKey = null;
 

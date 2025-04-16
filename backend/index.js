@@ -12,17 +12,6 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// ✅ Optional: Only allow safe methods
-const ALLOWED_METHODS = [
-  "getBalance",
-  "getTokenAccountsByOwner",
-  "getRecentBlockhash",
-  "getTokenSupply",
-  "getParsedTokenAccountsByOwner",
-  "getAccountInfo",
-  "getProgramAccounts"
-];
-
 // ✅ Rate limiting: 100 requests per IP per minute
 const limiter = rateLimit({
   windowMs: 60 * 1000,
@@ -30,13 +19,8 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// ✅ Main proxy route (mimics real RPC)
+// ✅ Main proxy route (for all Solana JSON-RPC)
 app.post("/", async (req, res) => {
-  const method = req.body?.method;
-  if (!ALLOWED_METHODS.includes(method)) {
-    return res.status(403).json({ error: "RPC method not allowed." });
-  }
-
   try {
     const response = await fetch(process.env.QUICKNODE_URL, {
       method: "POST",
