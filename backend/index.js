@@ -56,23 +56,24 @@ app.get("/token-info", async (req, res) => {
 
 app.get("/holders", async (req, res) => {
   const tokenAddress = "9AtC4cXKs7XUGCsoxPcEuMeig68MJwHpn6LXQCgF19DY";
-  const url = `https://public-api.birdeye.so/defi/v3/token/holder?address=${tokenAddress}&offset=0&limit=1`;
+  const url = `https://api.helius.xyz/v0/tokens/${tokenAddress}/holders`;
 
   try {
       const response = await fetch(url, {
           headers: {
-              'X-API-KEY': process.env.BIRDEYE_API_KEY
+              'X-API-KEY': process.env.HELIUS_API_KEY
           }
       });
       const data = await response.json();
-      const holders = data.data.total; // ✅ <- USE .total, not .holders
+      const holders = data.total; // ✅ the number you want
 
       res.json({ holders: holders });
   } catch (error) {
-      console.error("Birdeye API error:", error);
+      console.error("Helius API error:", error);
       res.status(500).json({ error: "Failed to fetch holders" });
   }
 });
+
 
 
 
