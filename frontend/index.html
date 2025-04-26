@@ -1,50 +1,183 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CriptoZao</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen">
-  <div class="bg-gray-800 p-6 rounded-lg shadow-lg w-96 text-center">
-    <h1 class="text-2xl font-bold mb-4">CRL Sitio</h1>
-    
-    <button id="connectWallet" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mb-2">Connect Phantom Wallet</button>
-    <button id="disconnectWallet" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mb-2" disabled>Disconnect</button>
-    
-    <p id="walletStatus" class="mt-2">Not connected</p>
-    <p id="SOLbal" class="mt-1">SOL Balance: N/A</p>
-    <p id="CRLbal" class="mt-1">CRL Balance: N/A</p>
-  </div>
-  
-  <div id="graph" class="w-full max-w-4xl mt-6 hidden">
-    <iframe id="geckoterminal-embed" title="GeckoTerminal Embed" src="https://www.geckoterminal.com/solana/pools/857wGRbkBN7uAKdsdzop4BCQ8ZPeqKX8x3v6JDPbpSnc?embed=1&info=1&swaps=0&grayscale=0&light_chart=0&chart_type=price&resolution=15m" frameborder="0" allow="clipboard-write" allowfullscreen class="w-full h-96"></iframe>
-  </div>
-
-  <script src="https://terminal.jup.ag/main-v4.js" data-preload></script>
-
-  <div id="integrated-terminal" class="w-full max-w-4xl mt-6 hidden">
-    <script>
-        window.Jupiter.init({
-            displayMode: "integrated",
-            integratedTargetId: "integrated-terminal",
-            endpoint: "https://criptolag.onrender.com",
-            formProps: {
-                fixedInputMint: false,
-                fixedOutputMint: true,
-                swapMode: "ExactIn",
-                initialInputMint: "So11111111111111111111111111111111111111112",
-                initialOutputMint: "9AtC4cXKs7XUGCsoxPcEuMeig68MJwHpn6LXQCgF19DY",
-                strictTokenList: false
-            }
-        });
-    </script>
-  </div>
-  
-
-
-  <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.76.0/lib/index.iife.min.js"></script>
-  <script src="./main.js"></script>
-</body>
+<html data-wf-domain="criptolag.io" data-wf-page="680c1865a1a1d7dff497276e" data-wf-site="680c1865a1a1d7dff497273c" data-wf-status="1">
+	<head>
+		<meta charset="utf-8" />
+		<title>CriptoLag</title>
+		<meta content="width=device-width, initial-scale=1" name="viewport" />
+		<link href="style.css" rel="stylesheet" type="text/css" />
+		<link href="https://cdn.prod.website-files.com/img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+		<link href="https://cdn.prod.website-files.com/img/webclip.png" rel="apple-touch-icon" />
+		<style>
+			.w-webflow-badge { position: fixed !important; display: None !important; visibility: hidden !important; }
+		</style>
+	</head>
+	<body class="body">
+		<section class="section-3">
+			<div class="div-block">
+				<div class="w-layout-hflex flex-block">
+					<a class="navbar-brand w-nav-brand" href="#">
+						<img
+							alt=""
+							class="image"
+							loading="lazy"
+							sizes="(max-width: 479px) 98vw, (max-width: 3804px) 100vw, 3804px"
+							src="https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c426469211cfdda8172bd_CRIPTOLAG-SIMBOLO-AZUL.png"
+							srcset="
+								https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c426469211cfdda8172bd_CRIPTOLAG-SIMBOLO-AZUL-p-500.png   500w,
+								https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c426469211cfdda8172bd_CRIPTOLAG-SIMBOLO-AZUL-p-800.png   800w,
+								https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c426469211cfdda8172bd_CRIPTOLAG-SIMBOLO-AZUL-p-1080.png 1080w,
+								https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c426469211cfdda8172bd_CRIPTOLAG-SIMBOLO-AZUL-p-1600.png 1600w,
+								https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c426469211cfdda8172bd_CRIPTOLAG-SIMBOLO-AZUL-p-2000.png 2000w,
+								https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c426469211cfdda8172bd_CRIPTOLAG-SIMBOLO-AZUL-p-2600.png 2600w,
+								https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c426469211cfdda8172bd_CRIPTOLAG-SIMBOLO-AZUL-p-3200.png 3200w,
+								https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c426469211cfdda8172bd_CRIPTOLAG-SIMBOLO-AZUL.png        3804w
+							"
+						/>
+					</a>
+					<div class="text-block">LA MONEDA OFICIAL DE LA LAGUNA</div>
+					<a class="button-primary w-button" href="#" id="connectWallet">CONECTAR WALLET</a><a class="button-primary-copy w-button" href="#" id="disconnectWallet" style="display: none;">DESCONECTAR WALLET</a>
+				</div>
+			</div>
+		</section>
+		<div class="div-block-2"></div>
+		<section class="section-2">
+			<div class="w-layout-hflex flex-block-2">
+				<section class="section"></section>
+				<img
+					alt=""
+					class="image-2"
+					loading="lazy"
+					sizes="(max-width: 3380px) 100vw, 3380px"
+					src="https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c434d1aa028070ee8d8dd_CRIPTOLAG-SIMBOLO-AZUL.png"
+					srcset="
+						https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c434d1aa028070ee8d8dd_CRIPTOLAG-SIMBOLO-AZUL-p-500.png   500w,
+						https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c434d1aa028070ee8d8dd_CRIPTOLAG-SIMBOLO-AZUL-p-800.png   800w,
+						https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c434d1aa028070ee8d8dd_CRIPTOLAG-SIMBOLO-AZUL-p-1080.png 1080w,
+						https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c434d1aa028070ee8d8dd_CRIPTOLAG-SIMBOLO-AZUL-p-1600.png 1600w,
+						https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c434d1aa028070ee8d8dd_CRIPTOLAG-SIMBOLO-AZUL-p-2000.png 2000w,
+						https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c434d1aa028070ee8d8dd_CRIPTOLAG-SIMBOLO-AZUL-p-2600.png 2600w,
+						https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c434d1aa028070ee8d8dd_CRIPTOLAG-SIMBOLO-AZUL-p-3200.png 3200w,
+						https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c434d1aa028070ee8d8dd_CRIPTOLAG-SIMBOLO-AZUL.png        3380w
+					"
+				/>
+				<img
+					alt=""
+					class="image-3"
+					loading="lazy"
+					sizes="(max-width: 4167px) 100vw, 4167px"
+					src="https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c439e7d36df02a0ea5694_CRIPTOLAG-AZUL.png"
+					srcset="
+						https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c439e7d36df02a0ea5694_CRIPTOLAG-AZUL-p-500.png   500w,
+						https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c439e7d36df02a0ea5694_CRIPTOLAG-AZUL-p-800.png   800w,
+						https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c439e7d36df02a0ea5694_CRIPTOLAG-AZUL-p-1080.png 1080w,
+						https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c439e7d36df02a0ea5694_CRIPTOLAG-AZUL-p-1600.png 1600w,
+						https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c439e7d36df02a0ea5694_CRIPTOLAG-AZUL-p-2000.png 2000w,
+						https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c439e7d36df02a0ea5694_CRIPTOLAG-AZUL-p-2600.png 2600w,
+						https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c439e7d36df02a0ea5694_CRIPTOLAG-AZUL-p-3200.png 3200w,
+						https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/680c439e7d36df02a0ea5694_CRIPTOLAG-AZUL.png        4167w
+					"
+				/>
+			</div>
+			<div class="w-layout-hflex flex-block-3">
+				<a class="compra w-button" href="#buysellSection" id="Buy">COMPRA</a><a class="venta w-button" href="#buysellSection" id="Sell">VENTA</a><a class="swap w-button" href="#swapSection" id="Swap">SWAP</a>
+				<a class="balance w-button" href="#balanceSection" id="Balance">BALANCE</a>
+			</div>
+			<div class="w-layout-vflex flex-block-4">
+				<h1 class="heading">El nuevo método de pago que ofrece grandes beneficios y recompensas solo por usarlo.</h1>
+				<p class="paragraph-3">Compra, vende e intercambia tokens y NFTs desde nuestra plataforma digital.</p>
+			</div>
+		</section>
+		<div class="div-block-2"></div>
+		<section class="section-5">
+			<div class="w-layout-vflex flex-block-6">
+				<h1 class="heading-4">PRECIO ACTUAL DEL PROYECTO</h1>
+				<h1 class="heading-5">$100,000.00</h1>
+			</div>
+			<div class="w-layout-hflex flex-block-7">
+				<h1>PRECIO DEL TOKEN</h1>
+				<h1>HOLDERS</h1>
+				<h1>MARKET CAP</h1>
+				<h1>LIQUIDITY</h1>
+				<h1 id="Price">$1.555</h1>
+				<h1 id="Holders">50</h1>
+				<h1 id="marketCap">$101K</h1>
+				<h1 id="Liquidity">$1,980</h1>
+			</div>
+			<div class="w-layout-vflex flex-block-9">
+				<a class="button w-button" href="#" id="viewGraph">VISUALIZAR LA GRÁFICA</a>
+				<p class="paragraph-8">Powered by gmgn.ai</p>
+			</div>
+		</section>
+		<div class="div-block-3"></div>
+		<section class="section-6">
+			<div class="w-layout-hflex flex-block-10">
+				<h1 class="heading-6">COMPRAR</h1>
+				<h1 class="heading-7">VENDER</h1>
+				<h1 class="heading-8">SWAP</h1>
+				<p class="paragraph-9">Usa Apple Pay, Google Pay, o tu tarjeta para comprar criptomonedas rápidamente. También aceptamos PayPal y transferencias bancarias en ciertas regiones.</p>
+				<p class="paragraph-10">Vender criptomonedas en MoonPay es sencillo. Regístrate para obtener una cuenta gratuita en segundos. Luego, añade la información de verificación para comenzar.</p>
+				<p class="paragraph-11">Cambia entre tokens, incluso si están en cadenas diferentes (también hacemos que el puenteo sea fluido).</p>
+			</div>
+		</section>
+		<div class="div-block-3"></div>
+		<div class="div-block-2"></div>
+		<section class="section-7 w-node-dce96525-6e0e-2bd6-c613-617dc497ada7-f497276e" id="swapSection">
+			<div class="w-layout-vflex flex-block-11">
+				<h1 class="heading-9">SWAP</h1>
+				<div id="jupiterContainer" class="w-layout-blockcontainer container w-container" style="min-height:400px;">
+				</div>
+				
+				<!-- Jupiter Terminal script -->
+				<script src="https://terminal.jup.ag/main-v4.js" data-preload></script>
+				
+				<script>
+				  window.Jupiter.init({
+					displayMode: "integrated",
+					integratedTargetId: "jupiterContainer",
+					endpoint: "https://criptolag.onrender.com", // your custom endpoint
+					formProps: {
+					  fixedInputMint: false,
+					  fixedOutputMint: true,
+					  swapMode: "ExactIn",
+					  initialInputMint: "So11111111111111111111111111111111111111112", // SOL
+					  initialOutputMint: "9AtC4cXKs7XUGCsoxPcEuMeig68MJwHpn6LXQCgF19DY", // CRL
+					  strictTokenList: false
+					}
+				  });
+				</script>
+			</div>
+		</section>
+		<section class="section-8 w-node-_8f3e1885-c371-fd12-e611-96f2e749fa4e-f497276e" id="buysellSection">
+			<div class="w-layout-vflex flex-block-11">
+				<h1 class="heading-9">BUY &amp; SELL</h1>
+				<div class="w-layout-blockcontainer container w-container" id="moonpayContainer"></div>
+			</div>
+		</section>
+		<section id="balanceSection">
+			<div class="w-layout-hflex flex-block-13">
+				<h1 id="SOLbal">Balance de SOL: N/A</h1>
+				<h1 id="CRLbal">Balance de CRL: N/A</h1>
+                <h1 id="walletStatus">Not Connected</h1>
+			</div>
+		</section>
+		<div class="div-block-2"></div>
+		<section class="section-9">
+			<div class="w-layout-hflex flex-block-12">
+				<h1 class="heading-13" id="personnel">Personal</h1>
+				<h1 class="heading-10" id="company">Compañía</h1>
+				<h1 class="heading-11" id="support">Soporte</h1>
+				<h1 class="heading-12" id="buy">Comprar</h1>
+			</div>
+		</section>
+		<script
+			crossorigin="anonymous"
+			integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+			src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=680c1865a1a1d7dff497273c"
+			type="text/javascript"
+		></script>
+		<script src="https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/js/webflow.schunk.da2a71223c5dec6e.js" type="text/javascript"></script>
+		<script src="https://cdn.prod.website-files.com/680c1865a1a1d7dff497273c/js/webflow.751e0867.fcb9e19f4949510c.js" type="text/javascript"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.76.0/lib/index.iife.min.js"></script>
+        <script src="main.js"></script>
+	</body>
 </html>

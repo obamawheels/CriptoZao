@@ -9,13 +9,11 @@ async function connectWallet() {
     const walletStatus = document.getElementById("walletStatus");
     const connectButton = document.getElementById("connectWallet");
     const disconnectButton = document.getElementById("disconnectWallet");
-    const graph = document.getElementById("graph");
-    const terminal = document.getElementById("integrated-terminal");
 
-    connectButton.disabled = true;
+    connectButton.style.display = "none";        // hide Connect
+    disconnectButton.style.display = "inline-block"; // show Disconnect
+
     walletStatus.textContent = "Connecting...";
-    graph.style.display = "block";
-    terminal.style.display = "block";
 
     try {
         if (!window.solana || !window.solana.isPhantom) {
@@ -27,8 +25,8 @@ async function connectWallet() {
         publicKey = response.publicKey;
 
         walletStatus.textContent = `Connected: ${publicKey.toString()}`;
-        connectButton.disabled = true;
-        disconnectButton.disabled = false;
+        connectButton.style.display = "none";        // hide Connect
+        disconnectButton.style.display = "inline-block"; // show Disconnect
 
         if (!window.phantomEventListenersAttached) {
             window.solana.on("connect", onPhantomConnect);
@@ -55,14 +53,12 @@ async function disconnectWallet() {
     const disconnectButton = document.getElementById("disconnectWallet");
     const SOLbal = document.getElementById("SOLbal");
     const CRLbal = document.getElementById("CRLbal");
-    const graph = document.getElementById("graph");
-    const terminal = document.getElementById("integrated-terminal");
+    
+    connectButton.style.display = "inline-block";  // show Connect
+    disconnectButton.style.display = "none";       // hide Disconnect
 
-    disconnectButton.disabled = true;
     walletStatus.textContent = "Disconnecting...";
-    graph.style.display = "none";
-    terminal.style.display = "none";
-
+ 
     try {
         if (!window.solana) throw new Error("Phantom Wallet not found.");
         await window.solana.disconnect();
@@ -73,8 +69,9 @@ async function disconnectWallet() {
         console.error("Disconnection failed:", error);
         walletStatus.textContent = `Disconnection Failed: ${error.message}`;
     } finally {
-        connectButton.disabled = publicKey !== null;
-        disconnectButton.disabled = publicKey === null;
+        connectButton.style.display = "inline-block";  // show Connect
+        disconnectButton.style.display = "none";       // hide Disconnect
+
     }
 }
 
@@ -85,8 +82,9 @@ function onPhantomConnect(newPublicKey) {
     const disconnectButton = document.getElementById("disconnectWallet");
 
     walletStatus.textContent = `Connected: ${publicKey.toString()}`;
-    connectButton.disabled = true;
-    disconnectButton.disabled = false;
+    connectButton.style.display = "none";        // hide Connect
+    disconnectButton.style.display = "inline-block"; // show Disconnect
+
 
     displaySolBalance();
     displayTokenBalance(CRL_MINT);
@@ -101,8 +99,9 @@ function onPhantomDisconnect() {
     const CRLbal = document.getElementById("CRLbal");
 
     walletStatus.textContent = "Not connected";
-    connectButton.disabled = false;
-    disconnectButton.disabled = true;
+    connectButton.style.display = "inline-block";  // show Connect
+    disconnectButton.style.display = "none";       // hide Disconnect
+    
     SOLbal.textContent = "SOL Balance: N/A";
     CRLbal.textContent = "CRL Balance: N/A";
 }
@@ -128,12 +127,12 @@ async function displaySolBalance() {
         });
 
         const result = await response.json();
-        const lamports = result.result;
+        const lamports = result.result.value;
         const solBalance = lamports / solanaWeb3.LAMPORTS_PER_SOL;
         SOLbal.textContent = `SOL Balance: ${solBalance.toFixed(4)}`;
     } catch (error) {
         console.error("Error fetching SOL balance:", error);
-        SOLbal.textContent = "Balance: Error fetching balance";
+        SOLbal.textContent = "SOL Balance: Error fetching balance";
     }
 }
 
@@ -146,13 +145,14 @@ async function displayTokenBalance(tokenMintAddress) {
     }
 
     try {
+        
         const response = await fetch(`${BACKEND_URL}/`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 jsonrpc: "2.0",
                 id: 1,
-                method: "getParsedTokenAccountsByOwner",
+                method: "getTokenAccountsByOwner",
                 params: [
                     publicKey.toString(),
                     { mint: tokenMintAddress },
@@ -165,15 +165,37 @@ async function displayTokenBalance(tokenMintAddress) {
         const accounts = result.result.value;
 
         if (accounts.length === 0) {
-            CRLbal.textContent = "CRL Balance: 0 (No associated account)";
+            CRLbal.textContent = "CRL Balance: 0.0000";
             return;
         }
 
-        const balance = accounts[0].account.data.parsed.info.tokenAmount.uiAmount;
-        CRLbal.textContent = `CRL Balance: ${balance}`;
+        const rawData = accounts[0].account.data;
+        const amount = rawData.parsed.info.tokenAmount.uiAmount;
+        CRLbal.textContent = `CRL Balance: ${amount.toFixed(4)}`;
     } catch (error) {
         console.error("Error fetching CRL balance:", error);
-        CRLbal.textContent = "Balance: Error fetching balance";
+        CRLbal.textContent = "CRL Balance: Error fetching balance";
+    }
+}
+
+async function fetchTokenInfo() {
+    try {
+        const response = await fetch(`${BACKEND_URL}/token-info`);
+        const data = await response.json();
+        const poolData = data.data.attributes;
+
+        const price = poolData.base_token_price_usd;
+        const liquidity = poolData.base_token_liquidity_usd;
+        const marketCap = poolData.base_token_market_cap_usd;
+        const holders = poolData.base_token_number_of_holders || 'N/A';
+
+        document.getElementById("Price").textContent = `$${parseFloat(price).toFixed(6)}`;
+        document.getElementById("Liquidity").textContent = `$${parseFloat(liquidity).toLocaleString()}`;
+        document.getElementById("marketCap").textContent = `$${parseFloat(marketCap).toLocaleString()}`;
+        document.getElementById("Holders").textContent = holders;
+
+    } catch (error) {
+        console.error("Error fetching token info:", error);
     }
 }
 
@@ -185,4 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
     disconnectButton.addEventListener("click", disconnectWallet);
 
     disconnectButton.disabled = true;
+
+    fetchTokenInfo(); // <<< ADD THIS after setting event listeners
 });
+

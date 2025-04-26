@@ -39,3 +39,18 @@ app.post("/", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Proxy running at http://localhost:${PORT}`);
 });
+
+app.get("/token-info", async (req, res) => {
+  const poolAddress = "857wGRbkBN7uAKdsdzop4BCQ8ZPeqKX8x3v6JDPbpSnc"; // CRL pool
+  const url = `https://api.geckoterminal.com/api/v2/networks/solana/pools/${poolAddress}`;
+
+  try {
+      const response = await fetch(url);
+      const data = await response.json();
+      res.json(data);
+  } catch (error) {
+      console.error("GeckoTerminal API error:", error);
+      res.status(500).json({ error: "Failed to fetch token info" });
+  }
+});
+
