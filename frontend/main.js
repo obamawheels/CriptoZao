@@ -223,5 +223,6 @@ document.addEventListener("DOMContentLoaded", () => {
     disconnectButton.disabled = true;
 
     fetchTokenInfo(); // <<< ADD THIS after setting event listeners
+    fetchHolderCount(); // <<< ADD THIS after setting event listeners
 });
 

@@ -56,7 +56,7 @@ app.get("/token-info", async (req, res) => {
 
 app.get("/holders", async (req, res) => {
   const tokenAddress = "9AtC4cXKs7XUGCsoxPcEuMeig68MJwHpn6LXQCgF19DY";
-  const url = `https://public-api.birdeye.so/public/token/${tokenAddress}`;
+  const url = `https://public-api.birdeye.so/defi/v3/token/holder?address=${tokenAddress}&offset=0&limit=1`;
 
   try {
       const response = await fetch(url, {
@@ -65,11 +65,14 @@ app.get("/holders", async (req, res) => {
           }
       });
       const data = await response.json();
-      res.json({ holders: data.data.holders });
+      const holders = data.data.total; // ✅ <- USE .total, not .holders
+
+      res.json({ holders: holders });
   } catch (error) {
       console.error("Birdeye API error:", error);
       res.status(500).json({ error: "Failed to fetch holders" });
   }
 });
+
 
 
