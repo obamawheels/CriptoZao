@@ -201,7 +201,7 @@ async function fetchTokenInfo() {
 
 async function fetchHolderCount() {
     try {
-        const response = await fetch(`${BACKEND_URL}/holders`);
+        const response = await fetch(`${BACKEND_URL}/holders?mint=${CRL_MINT}`);
         const data = await response.json();
         const holders = data.holders;
 
@@ -210,6 +210,7 @@ async function fetchHolderCount() {
         console.error('Error fetching holder count:', error);
     }
 }
+
 
 
 

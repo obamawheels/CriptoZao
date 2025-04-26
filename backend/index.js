@@ -68,7 +68,10 @@ app.get("/holders", async (req, res) => {
         method: "getTokenAccountsByMint",
         params: [
           mint,
-          { encoding: "jsonParsed" }
+          {
+            encoding: "jsonParsed",
+            commitment: "confirmed" // 🔥 ADD THIS
+          }
         ]
       })
     });
@@ -91,6 +94,7 @@ app.get("/holders", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch holders" });
   }
 });
+
 
 app.listen(PORT, () => {
   console.log(`Proxy running at http://localhost:${PORT}`);
