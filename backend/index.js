@@ -19,7 +19,7 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// ✅ Main proxy route (for all Solana JSON-RPC)
+// ✅ Proxy route (for general Solana JSON-RPC)
 app.post("/", async (req, res) => {
   try {
     const response = await fetch(process.env.QUICKNODE_URL, {
@@ -36,44 +36,62 @@ app.post("/", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Proxy running at http://localhost:${PORT}`);
-});
-
+// ✅ GeckoTerminal token info
 app.get("/token-info", async (req, res) => {
   const poolAddress = "857wGRbkBN7uAKdsdzop4BCQ8ZPeqKX8x3v6JDPbpSnc"; // CRL pool
   const url = `https://api.geckoterminal.com/api/v2/networks/solana/pools/${poolAddress}`;
 
   try {
-      const response = await fetch(url);
-      const data = await response.json();
-      res.json(data);
+    const response = await fetch(url);
+    const data = await response.json();
+    res.json(data);
   } catch (error) {
-      console.error("GeckoTerminal API error:", error);
-      res.status(500).json({ error: "Failed to fetch token info" });
+    console.error("GeckoTerminal API error:", error);
+    res.status(500).json({ error: "Failed to fetch token info" });
   }
 });
 
+// ✅ NEW: Get number of holders for a token mint
 app.get("/holders", async (req, res) => {
-  const tokenAddress = "9AtC4cXKs7XUGCsoxPcEuMeig68MJwHpn6LXQCgF19DY";
-  const url = `https://api.helius.xyz/v0/tokens/${tokenAddress}/holders`;
+  const mint = req.query.mint;
+  if (!mint) {
+    return res.status(400).json({ error: "Missing 'mint' query parameter" });
+  }
 
   try {
-      const response = await fetch(url, {
-          headers: {
-              'X-API-KEY': process.env.HELIUS_API_KEY
-          }
-      });
-      const data = await response.json();
-      const holders = data.total; // ✅ the number you want
+    const response = await fetch(process.env.QUICKNODE_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        id: 1,
+        method: "getTokenAccountsByMint",
+        params: [
+          mint,
+          { encoding: "jsonParsed" }
+        ]
+      })
+    });
 
-      res.json({ holders: holders });
+    const rpcData = await response.json();
+
+    if (!rpcData.result || !rpcData.result.value) {
+      return res.status(500).json({ error: "Invalid RPC response" });
+    }
+
+    // Count accounts with balance > 0
+    const holders = rpcData.result.value.filter(account => {
+      const amount = account.account.data.parsed.info.tokenAmount.uiAmount;
+      return amount && amount > 0;
+    }).length;
+
+    res.json({ holders });
   } catch (error) {
-      console.error("Helius API error:", error);
-      res.status(500).json({ error: "Failed to fetch holders" });
+    console.error("Holders fetch error:", error);
+    res.status(500).json({ error: "Failed to fetch holders" });
   }
 });
 
-
-
-
+app.listen(PORT, () => {
+  console.log(`Proxy running at http://localhost:${PORT}`);
+});
