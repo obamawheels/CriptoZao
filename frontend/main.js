@@ -185,19 +185,33 @@ async function fetchTokenInfo() {
         const poolData = data.data.attributes;
 
         const price = poolData.base_token_price_usd;
-        const liquidity = poolData.base_token_liquidity_usd;
-        const marketCap = poolData.base_token_market_cap_usd;
-        const holders = poolData.base_token_number_of_holders || 'N/A';
+        const liquidity = poolData.reserve_in_usd;
+        const marketCap = poolData.fdv_usd;
 
         document.getElementById("Price").textContent = `$${parseFloat(price).toFixed(6)}`;
         document.getElementById("Liquidity").textContent = `$${parseFloat(liquidity).toLocaleString()}`;
         document.getElementById("marketCap").textContent = `$${parseFloat(marketCap).toLocaleString()}`;
-        document.getElementById("Holders").textContent = holders;
+        document.getElementById("projectPrice").textContent = `$${parseFloat(marketCap).toLocaleString()}`;
+
 
     } catch (error) {
         console.error("Error fetching token info:", error);
     }
 }
+
+async function fetchHolderCount() {
+    try {
+        const response = await fetch(`${BACKEND_URL}/holders`);
+        const data = await response.json();
+        const holders = data.holders;
+
+        document.getElementById("Holders").textContent = holders;
+    } catch (error) {
+        console.error('Error fetching holder count:', error);
+    }
+}
+
+
 
 document.addEventListener("DOMContentLoaded", () => {
     const connectButton = document.getElementById("connectWallet");
